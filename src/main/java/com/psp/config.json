@@ -1,0 +1,4 @@
+{
+  "logFile": "src/main/java/com/psp/logs/app.log",
+  "seed": 12345
+}

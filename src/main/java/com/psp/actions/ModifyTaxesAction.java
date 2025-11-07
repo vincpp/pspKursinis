@@ -2,7 +2,7 @@ package com.psp.actions;
 
 import com.psp.cityEntities.City;
 
-public class CutExpenditureAction implements Action{
+public class ModifyTaxesAction implements Action{
     @Override
     public void execute(City c) {
 
