@@ -1,0 +1,27 @@
+Turn sequence (concise)
+
+Render city summary (population, budget, attributes, buildings, turn).
+
+Player chooses an action (build / fix / raise taxes / cut expenditure) → create & validate Action.
+
+Execute Action (mutates City, updates Budget/Attributes).
+
+EventGenerator draws an Event → Event.apply(city) (can be immediate or delayed effects).
+
+Income/upkeep processed (Budget adjust).
+
+RuleChecker evaluates loss/win (budget ≤ 0 or happiness ≤ 0 ⇒ lose; turn ≥ 100 ⇒ win).
+
+Increment turn, notify UI observers, loop.
+
+Design notes & extensibility (one-liners)
+
+Keep Action and Event pure data + behavior so new ones are added without modifying engine.
+
+Use Observer for UI to react to City or GameState changes.
+
+Make RandomProvider injectable for deterministic tests.
+
+Balance via EventDeck weights and Building effect composition.
+
+Keep terminal UI thin — it should only translate player input to Actions and display model state.
