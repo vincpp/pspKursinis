@@ -28,14 +28,14 @@ public class CityAttributes {
         if (population == null || bm == null || budget == null) return;
 
         // Pollution: industrial and commercial add pollution, public services reduce it, and there's a small natural decay
-        double pollutionDelta = bm.industrialBuildings * 1.5 + bm.commercialBuildings * 0.5 - bm.publicServiceBuildings * 1.0 - this.pollution * 0.01;
+        double pollutionDelta = bm.getIndustrialBuildings() * 1.5 + bm.getCommercialBuildings() * 0.5 - bm.getPublicServiceBuildings() * 1.0 - this.pollution * 0.01;
 
         // Safety: public services increase safety, pollution lowers it, and larger population slightly reduces safety
-        double safetyDelta = bm.publicServiceBuildings * 0.8 - (population.getPopulation() / 1000.0) * 0.02 - this.pollution * 0.03;
+        double safetyDelta = bm.getPublicServiceBuildings() * 0.8 - (population.getPopulationCount() / 1000.0) * 0.02 - this.pollution * 0.03;
 
         // Happiness: increased by public services and a healthy economy, decreased by tax rate and pollution
         double econEffect = (budget.getIncome() - budget.getExpenditure()) / 10000.0; // scaled
-        double happinessDelta = bm.publicServiceBuildings * 0.4 + econEffect * 0.2 - budget.getTaxRate() * 0.05 - this.pollution * 0.08;
+        double happinessDelta = bm.getPublicServiceBuildings() * 0.4 + econEffect * 0.2 - budget.getTaxRate() * 0.05 - this.pollution * 0.08;
 
         // Apply changes and clamp to [0,100]
         this.pollution = clamp((int) Math.round(this.pollution + pollutionDelta), 0, 100);

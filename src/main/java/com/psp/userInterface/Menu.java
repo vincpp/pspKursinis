@@ -11,8 +11,7 @@ public class Menu {
     private CityStats cityStats;
     private MenuName currentMenuName = MenuName.MAIN;
     public InputHandler inputHandler;
-//    Scanner scanner = new Scanner(System.in);
-//    Action currentAction = new Action();
+
     private String mainMenu =
             "=========================\n" +
             "      MAIN MENU         \n" +
@@ -26,14 +25,50 @@ public class Menu {
 
     private String buildingMenu =
             "=========================\n" +
-            "    BUILDING MENU       \n" +
+            "       BUILDING MENU       \n" +
             "=========================\n" +
-            "1. House (H)\n" +
-            "2. Factory (F)\n" +
-            "3. Park (P) \n" +
+            "1. Build New Buildings (H)\n" +
+            "2. Fix Damaged Buildings (J)\n" +
+            "3. Destroy Buildings (K)\n" +
             "4. Back (W) \n" +
             "=========================\n" +
             "Please select a building type: ";
+
+    private String fixBuildingMenu =
+            "=========================\n" +
+            "   BUILDING FIXING MENU       \n" +
+            "=========================\n" +
+            "1. Fix a House (H)\n" +
+            "2. Fix a Factory (F)\n" +
+            "3. Fix a Commercial Building (C)\n" +
+            "4. Fix a Park (P) \n" +
+            "5. Back (W) \n" +
+            "=========================\n" +
+            "Please select a building type: ";
+
+    private String constructBuildingMenu =
+            "=========================\n" +
+            "    CONSTRUCTION MENU       \n" +
+            "=========================\n" +
+            "1. House (H)\n" +
+            "2. Factory (F)\n" +
+            "3. Commercial (C)\n" +
+            "4. Park (P) \n" +
+            "5. Back (W) \n" +
+            "=========================\n" +
+            "Please select a building type to build: ";
+
+    private String destroyBuildingMenu =
+            "=========================\n" +
+            "    DECONSTRUCTION MENU       \n" +
+            "=========================\n" +
+            "1. DESTROY a House (H)\n" +
+            "2. DESTROY a Factory (F)\n" +
+            "3. DESTROY a Commercial (C)\n" +
+            "4. DESTROY a Park (P) \n" +
+            "5. Back (W) \n" +
+            "=========================\n" +
+            "Please select a building type to build: ";
 
     private String administrationMenu=
             "=========================\n" +
@@ -52,6 +87,9 @@ public class Menu {
         return switch (currentMenuName) {
             case MAIN -> mainMenu;
             case BUILDING -> buildingMenu;
+            case FIX_BUILDING -> fixBuildingMenu;
+            case CONSTRUCT_BUILDING -> constructBuildingMenu;
+            case DESTROY_BUILDING -> destroyBuildingMenu;
             case ADMINISTRATION -> administrationMenu;
         };
     }

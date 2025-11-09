@@ -1,5 +1,7 @@
 package com.psp.userInterface;
 
+import com.psp.cityEntities.BuildingManager;
+import com.psp.cityEntities.BuildingType;
 import com.psp.cityEntities.City;
 
 public class CityStats {
@@ -26,26 +28,57 @@ public class CityStats {
          final String GREEN = "\u001B[32m";
 
         // Current values
-        long currentPop = city.getPopulation();
-        double currentGrowth = city.getPopulationGrowthRate();
-        double currentTax = city.getTaxRate();
-        long currentMoney = city.getBudgetMoney();
-        long currentIncome = city.getBudgetIncome();
-        long currentExpenditure = city.getBudgetExpenditure();
-        int happiness = city.getHappiness();
-        int pollution = city.getPollution();
-        int safety = city.getSafety();
+
+        BuildingManager buildingManager = city.getBuildingManager();
+
+        long currentPop = city.getPopulation().getPopulationCount();
+        double currentGrowth = city.getPopulation().getGrowthRate();
+        double currentTax = city.getBudget().getTaxRate();
+        long currentMoney = city.getBudget().getMoney();
+        long currentIncome = city.getBudget().getIncome();
+        long currentExpenditure = city.getBudget().getExpenditure();
+        int happiness = city.getAttributes().getHappiness();
+        int pollution = city.getAttributes().getPollution();
+        int safety = city.getAttributes().getSafety();
+
+        int curResA = buildingManager.getActiveBuildingCount(BuildingType.RESIDENTIAL);
+        int curResI = buildingManager.getInactiveBuildingCount(BuildingType.RESIDENTIAL);
+        int curComA = buildingManager.getActiveBuildingCount(BuildingType.COMMERCIAL);
+        int curComI = buildingManager.getInactiveBuildingCount(BuildingType.COMMERCIAL);
+        int curIndA = buildingManager.getActiveBuildingCount(BuildingType.INDUSTRIAL);
+        int curIndI = buildingManager.getInactiveBuildingCount(BuildingType.INDUSTRIAL);
+        int curPubA = buildingManager.getActiveBuildingCount(BuildingType.PUBLIC_SERVICE);
+        int curPubI = buildingManager.getInactiveBuildingCount(BuildingType.PUBLIC_SERVICE);
+
+
 
         // Projected values (from deep copy)
-        long projectedPop = nextTurnCity.getPopulation();
-        double projectedGrowth = nextTurnCity.getPopulationGrowthRate();
-        double projectedTax = nextTurnCity.getTaxRate();
-        long projectedMoney = nextTurnCity.getBudgetMoney();
-        long projectedIncome = nextTurnCity.getBudgetIncome();
-        long projectedExpenditure = nextTurnCity.getBudgetExpenditure();
-        int projectedHappiness = nextTurnCity.getHappiness();
-        int projectedPollution = nextTurnCity.getPollution();
-        int projectedSafety = nextTurnCity.getSafety();
+        BuildingManager projectedBM = nextTurnCity.getBuildingManager();
+        long projectedPop = nextTurnCity.getPopulation().getPopulationCount();
+        double projectedGrowth = nextTurnCity.getPopulation().getGrowthRate();
+        double projectedTax = nextTurnCity.getBudget().getTaxRate();
+        long projectedMoney = nextTurnCity.getBudget().getMoney();
+        long projectedIncome = nextTurnCity.getBudget().getIncome();
+        long projectedExpenditure = nextTurnCity.getBudget().getExpenditure();
+        int projectedHappiness = nextTurnCity.getAttributes().getHappiness();
+        int projectedPollution = nextTurnCity.getAttributes().getPollution();
+        int projectedSafety = nextTurnCity.getAttributes().getSafety();
+
+        int projResA = projectedBM.getActiveBuildingCount(BuildingType.RESIDENTIAL);
+        int projResI = projectedBM.getInactiveBuildingCount(BuildingType.RESIDENTIAL);
+        int projComA = projectedBM.getActiveBuildingCount(BuildingType.COMMERCIAL);
+        int projComI = projectedBM.getInactiveBuildingCount(BuildingType.COMMERCIAL);
+        int projIndA = projectedBM.getActiveBuildingCount(BuildingType.INDUSTRIAL);
+        int projIndI = projectedBM.getInactiveBuildingCount(BuildingType.INDUSTRIAL);
+        int projPubA = projectedBM.getActiveBuildingCount(BuildingType.PUBLIC_SERVICE);
+        int projPubI = projectedBM.getInactiveBuildingCount(BuildingType.PUBLIC_SERVICE);
+
+        int curUsedSlots = curResA + curResI + curComA + curComI + curIndA + curIndI + curPubA + curPubI;
+        int projUsedSlots = projResA + projResI + projComA + projComI + projIndA + projIndI + projPubA + projPubI;
+        int landSlots = buildingManager.getLandSlots();
+        int projLandSlots = projectedBM.getLandSlots();
+
+
 
         // Current attribute colors
         String colorH = (happiness < 30) ? RED : (happiness < 70) ? YELLOW : GREEN;
@@ -63,6 +96,33 @@ public class CityStats {
 
         String projPopColor = projectedPop > currentPop ? GREEN : (projectedPop < currentPop ? RED : YELLOW);
         String projGrowthColor = projectedGrowth > currentGrowth ? GREEN : (projectedGrowth < currentGrowth ? RED : YELLOW);
+
+
+        // Colors for projected building counts
+        // Active: green if increase, yellow if same, red if decrease
+        String resAColor = projResA > curResA ? GREEN : (projResA < curResA ? RED : YELLOW);
+        String comAColor = projComA > curComA ? GREEN : (projComA < curComA ? RED : YELLOW);
+        String indAColor = projIndA > curIndA ? GREEN : (projIndA < curIndA ? RED : YELLOW);
+        String pubAColor = projPubA > curPubA ? GREEN : (projPubA < curPubA ? RED : YELLOW);
+
+        // Inactive: red if increase, yellow if same, green if decrease
+        String resIColor = projResI > curResI ? RED : (projResI < curResI ? GREEN : YELLOW);
+        String comIColor = projComI > curComI ? RED : (projComI < curComI ? GREEN : YELLOW);
+        String indIColor = projIndI > curIndI ? RED : (projIndI < curIndI ? GREEN : YELLOW);
+        String pubIColor = projPubI > curPubI ? RED : (projPubI < curPubI ? GREEN : YELLOW);
+
+
+        int curResT = curResA + curResI;
+        int projResT = projResA + projResI;
+
+        int curComT = curComA + curComI;
+        int projComT = projComA + projComI;
+
+        int curIndT = curIndA + curIndI;
+        int projIndT = projIndA + projIndI;
+
+        int curPubT = curPubA + curPubI;
+        int projPubT = projPubA + projPubI;
 
         StringBuilder sb = new StringBuilder();
 
@@ -92,6 +152,35 @@ public class CityStats {
           .append("\t\t\tExpenditure: ").append(currentExpenditure).append("€")
           .append(" --> ").append(projExpenditureColor).append(projectedExpenditure).append(RESET).append("€")
           .append(System.lineSeparator());
+
+
+        // Buildings section with totals [Active/Inactive \[Total]]
+        sb.append("\nBuildings (Active/Inactive [Total])  \nResidential: \t\t")
+            .append(curResA).append("/").append(curResI).append(" [").append(curResT).append("] -> ")
+            .append(resAColor).append(projResA).append(RESET).append("/")
+            .append(resIColor).append(projResI).append(RESET)
+            .append(" [").append(projResT).append("]")
+
+            .append("  \nCommercial: \t\t").append(curComA).append("/").append(curComI).append(" [").append(curComT).append("] -> ")
+            .append(comAColor).append(projComA).append(RESET).append("/")
+            .append(comIColor).append(projComI).append(RESET)
+            .append(" [").append(projComT).append("]")
+
+            .append("  \nIndustry: \t\t\t").append(curIndA).append("/").append(curIndI).append(" [").append(curIndT).append("] -> ")
+            .append(indAColor).append(projIndA).append(RESET).append("/")
+            .append(indIColor).append(projIndI).append(RESET)
+            .append(" [").append(projIndT).append("]")
+
+            .append("  \nPublic Service: \t").append(curPubA).append("/").append(curPubI).append(" [").append(curPubT).append("] -> ")
+            .append(pubAColor).append(projPubA).append(RESET).append("/")
+            .append(pubIColor).append(projPubI).append(RESET)
+            .append(" [").append(projPubT).append("]")
+            .append(System.lineSeparator());
+        sb.append("\nLand slots used/total: ")
+            .append(curUsedSlots).append("/").append(landSlots)
+            .append(" -> ")
+            .append(projUsedSlots).append("/").append(projLandSlots)
+            .append(System.lineSeparator());
 
         return sb.toString();
     }

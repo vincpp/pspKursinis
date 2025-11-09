@@ -1,17 +1,17 @@
 package com.psp.cityEntities;
 
 import lombok.AllArgsConstructor;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
 public class City {
-    Population population;
-    BuildingManager buildingManager;
-    Budget budget;
-    CityAttributes attributes;
+    private Population population;
+    private BuildingManager buildingManager;
+    private Budget budget;
+    private CityAttributes attributes;
+
     public City() {
         this.population = new Population( );
         this.buildingManager = new BuildingManager();
@@ -25,39 +25,136 @@ public class City {
         this();
         updateCity(city);
     }
-    public long getPopulation(){
-        return population.getPopulation();
-    }
-    public double getPopulationGrowthRate(){
-        return population.getGrowthRate();
-    }
-    public int getHappiness(){
-        return attributes.getHappiness();
-    }
-    public int getPollution() {
-        return attributes.getPollution();
-    }
-    public int getSafety() {
-        return attributes.getSafety();
-    }
-    public long getBudgetMoney(){
-        return budget.getMoney();
-    }
-    public long getBudgetIncome(){
-        return budget.getIncome();
-    }
-    public long getBudgetExpenditure() {
-        return budget.getExpenditure();
-    }
-    public double getTaxRate(){
-        return budget.getTaxRate();
-    }
+//    public long getPopulation(){
+//        return population.getPopulation();
+//    }
+//    public double getPopulationGrowthRate(){
+//        return population.getGrowthRate();
+//    }
+//    public int getHappiness(){
+//        return attributes.getHappiness();
+//    }
+//    public int getPollution() {
+//        return attributes.getPollution();
+//    }
+//    public int getSafety() {
+//        return attributes.getSafety();
+//    }
+//    public long getBudgetMoney(){
+//        return budget.getMoney();
+//    }
+//    public long getBudgetIncome(){
+//        return budget.getIncome();
+//    }
+//    public long getBudgetExpenditure() {
+//        return budget.getExpenditure();
+//    }
+//    public void increaseExpenditure(long amount){
+//        budget.increaseExpenditure(amount);
+//    }
+//    public void decreaseExpenditure(int decreaseBy) {
+//        budget.decreaseExpenditure(decreaseBy);
+//    }
+//    public double getTaxRate(){
+//        return budget.getTaxRate();
+//    }
+//    public void increaseTaxRate(int amount){
+//        budget.increaseTaxRate(amount);
+//    }
+//    public void decreaseTaxRate(int amount){
+//        budget.decreaseTaxRate(amount);
+//    }
+//
+//    public void decreaseBudgetMoney(long amount){
+//        budget.decreaseMoney(amount);
+//    }
+//    public void increaseBudgetMoney(long amount){
+//        budget.increaseMoney(amount);
+//    }
+//
     public void updateForNextTurn(){
         population.updateForNextTurn();
         attributes.updateForNextTurn(population, buildingManager, budget);
         budget.updateForNextTurn(population);
-        // Budget and BuildingManager could also have update methods if needed
+
     }
+//
+//    public int getResidentialBuildings() {
+//          return buildingManager == null ? 0 : buildingManager.getResidentialBuildings();
+//      }
+//
+//      public void setResidentialBuildings(int residentialBuildings) {
+//          if (this.buildingManager == null) this.buildingManager = new BuildingManager();
+//          this.buildingManager.setResidentialBuildings(residentialBuildings);
+//      }
+//
+//      public int getCommercialBuildings() {
+//          return buildingManager == null ? 0 : buildingManager.getCommercialBuildings();
+//      }
+//
+//      public void setCommercialBuildings(int commercialBuildings) {
+//          if (this.buildingManager == null) this.buildingManager = new BuildingManager();
+//          this.buildingManager.setCommercialBuildings(commercialBuildings);
+//      }
+//
+//      public int getIndustrialBuildings() {
+//          return buildingManager == null ? 0 : buildingManager.getIndustrialBuildings();
+//      }
+//
+//      public void setIndustrialBuildings(int industrialBuildings) {
+//          if (this.buildingManager == null) this.buildingManager = new BuildingManager();
+//          this.buildingManager.setIndustrialBuildings(industrialBuildings);
+//      }
+//
+//      public int getPublicServiceBuildings() {
+//          return buildingManager == null ? 0 : buildingManager.getPublicServiceBuildings();
+//      }
+//
+//      public void setPublicServiceBuildings(int publicServiceBuildings) {
+//          if (this.buildingManager == null) this.buildingManager = new BuildingManager();
+//          this.buildingManager.setPublicServiceBuildings(publicServiceBuildings);
+//      }
+//
+//      public int getInactiveResidentialBuildings() {
+//          return buildingManager == null ? 0 : buildingManager.getInactiveResidentialBuildings();
+//      }
+//
+//      public void setInactiveResidentialBuildings(int inactiveResidentialBuildings) {
+//          if (this.buildingManager == null) this.buildingManager = new BuildingManager();
+//          this.buildingManager.setInactiveResidentialBuildings(inactiveResidentialBuildings);
+//      }
+//
+//      public int getInactiveCommercialBuildings() {
+//          return buildingManager == null ? 0 : buildingManager.getInactiveCommercialBuildings();
+//      }
+//
+//      public void setInactiveCommercialBuildings(int inactiveCommercialBuildings) {
+//          if (this.buildingManager == null) this.buildingManager = new BuildingManager();
+//          this.buildingManager.setInactiveCommercialBuildings(inactiveCommercialBuildings);
+//      }
+//
+//      public int getInactiveIndustrialBuildings() {
+//          return buildingManager == null ? 0 : buildingManager.getInactiveIndustrialBuildings();
+//      }
+//
+//      public void setInactiveIndustrialBuildings(int inactiveIndustrialBuildings) {
+//          if (this.buildingManager == null) this.buildingManager = new BuildingManager();
+//          this.buildingManager.setInactiveIndustrialBuildings(inactiveIndustrialBuildings);
+//      }
+//
+//      public int getInactivePublicServiceBuildings() {
+//          return buildingManager == null ? 0 : buildingManager.getInactivePublicServiceBuildings();
+//      }
+//
+//      public void setInactivePublicServiceBuildings(int inactivePublicServiceBuildings) {
+//          if (this.buildingManager == null) this.buildingManager = new BuildingManager();
+//          this.buildingManager.setInactivePublicServiceBuildings(inactivePublicServiceBuildings);
+//      }
+//
+//
+//      public int getBuildingPrices(BuildingType buildingType) {
+//        return buildingManager.getBuildingPrice(buildingType);
+//      }
 
     public void updateCity(City city) {
         if (city == null) return;
@@ -67,7 +164,7 @@ public class City {
             this.population = null;
         } else {
             if (this.population == null) this.population = new Population();
-            this.population.setPopulation(city.population.getPopulation());
+            this.population.setPopulationCount(city.population.getPopulationCount());
             this.population.setGrowthRate(city.population.getGrowthRate());
         }
 
@@ -75,18 +172,18 @@ public class City {
         if (city.buildingManager == null) {
             this.buildingManager = null;
         } else {
-            BuildingManager src = city.buildingManager;
-            BuildingManager dst = new BuildingManager();
-            dst.residentialBuildings = src.residentialBuildings;
-            dst.commercialBuildings = src.commercialBuildings;
-            dst.industrialBuildings = src.industrialBuildings;
-            dst.publicServiceBuildings = src.publicServiceBuildings;
-
-            dst.inactiveResidentialBuildings = src.inactiveResidentialBuildings;
-            dst.inactiveCommercialBuildings = src.inactiveCommercialBuildings;
-            dst.inactiveIndustrialBuildings = src.inactiveIndustrialBuildings;
-            dst.inactivePublicServiceBuildings = src.inactivePublicServiceBuildings;
-            this.buildingManager = dst;
+//            BuildingManager src = city.buildingManager;
+//            BuildingManager dst = new BuildingManager();
+//            dst.residentialBuildings = src.residentialBuildings;
+//            dst.commercialBuildings = src.commercialBuildings;
+//            dst.industrialBuildings = src.industrialBuildings;
+//            dst.publicServiceBuildings = src.publicServiceBuildings;
+//
+//            dst.inactiveResidentialBuildings = src.inactiveResidentialBuildings;
+//            dst.inactiveCommercialBuildings = src.inactiveCommercialBuildings;
+//            dst.inactiveIndustrialBuildings = src.inactiveIndustrialBuildings;
+//            dst.inactivePublicServiceBuildings = src.inactivePublicServiceBuildings;
+//            this.buildingManager = dst;
         }
 
         // Budget
@@ -110,4 +207,6 @@ public class City {
             this.attributes.setSafety(city.attributes.getSafety());
         }
     }
+
+
 }

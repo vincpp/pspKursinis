@@ -23,9 +23,14 @@ public class GameEngine {
     void start() {
         while (true) {
             try {
-                renderer.clearAndRender(menu.getCurrentMenu(), menu.getCityStats(), TurnManager.getTurn);
+                renderer.clearAndRender(menu.getCurrentMenu(), menu.getCityStats(), turnManager.getTurn());
                 String input = scanner.nextLine();
-                menu.inputHandler.readMenuInput(menu.getCurrentMenuName(), input);
+
+//                menu.inputHandler.readMenuInput(menu.getCurrentMenuName(), input);
+                Action action = menu.inputHandler.readMenuInput(menu.getCurrentMenuName(), input);
+                if (action != null) {
+                    handlePlayerAction(action);
+                }
 
             }
             catch (EndTurnException e){
@@ -45,6 +50,13 @@ public class GameEngine {
 
     }
     void handlePlayerAction(Action action){
+        try {
+            action.execute();
+        }
+        catch (Exception e){
+            System.out.println("An error occurred while executing the action: " + e.getMessage());
+            e.printStackTrace();
+        }
 
     }
     void resolveEvents(){}
