@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
     GameEngine gameEngine = new GameEngine();
-    TurnManager turnManager = new TurnManager();
+//    TurnManager turnManager = new TurnManager();
 
     Config config = Config.loadFromFile("src/main/java/com/psp/config.json");
     Logger logger = new Logger(Path.of(config.getLogFile()), config.getLogLevel());

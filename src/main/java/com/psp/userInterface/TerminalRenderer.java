@@ -4,36 +4,40 @@ import java.io.IOException;
 
 public class TerminalRenderer {
     String currentMenu;
+    String currentStats;
 
-    public TerminalRenderer(String currentMenu) {
+    public TerminalRenderer(String currentMenu, String currentStats) {
         this.currentMenu = currentMenu;
+        this.currentStats = currentStats;
+    }
+
+    public TerminalRenderer() {
+
     }
 
     public void setCurrentMenu(String currentMenu) {
         this.currentMenu = currentMenu;
     }
+    public void setCurrentStats(String currentStats) {
+        this.currentStats = currentStats;
+    }
 
     public void render() {
+        System.out.println(currentStats);
         System.out.println(currentMenu);
     }
 
-    /**
-     * Attempt to clear the console in a few ways:
-     * 1) Print ANSI escape sequences (works in many terminals, including modern Windows 10+ consoles).
-     * 2) Fall back to invoking the platform's clear command (cls / clear).
-     * 3) Final fallback: print several new lines to visually push previous output up.
-     */
     public void clearScreen() {
         // Try ANSI escape first
-//        final String ANSI_CLS = "\u001b[2J\u001b[H";
-//        try {
-//            System.out.print(ANSI_CLS);
-//            System.out.flush();
-//            // Give the terminal a moment (often not necessary)
-//            return;
-//        } catch (Throwable ignored) {
-//            // ignore and try other options
-//        }
+        final String ANSI_CLS = "\u001b[2J\u001b[H";
+        try {
+            System.out.print(ANSI_CLS);
+            System.out.flush();
+            // Give the terminal a moment (often not necessary)
+            return;
+        } catch (Throwable ignored) {
+            // ignore and try other options
+        }
 
         // Attempt OS-specific clear command
         String os = System.getProperty("os.name").toLowerCase();
@@ -55,7 +59,9 @@ public class TerminalRenderer {
 
     }
 
-    public void clearAndRender(String newMenu) {
+    public void clearAndRender(String newMenu, String newStats, int turnNumber) {
+        setCurrentStats(newStats);
+        System.out.println("TURN: " + turnNumber);
         setCurrentMenu(newMenu);
         clearScreen();
         render();
