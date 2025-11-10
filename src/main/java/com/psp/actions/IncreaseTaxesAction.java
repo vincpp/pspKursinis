@@ -14,6 +14,7 @@ public class IncreaseTaxesAction implements Action{
     public void execute() {
         if(validate()==true){
             city.getBudget().increaseTaxRate(increaseBy);
+            city.refreshIncome();
         }
         else{
             throw new IllegalArgumentException("Cannot Increase Taxes Above 100");

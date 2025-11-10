@@ -16,7 +16,8 @@ public class IncreaseExpenditureAction implements Action{
     @Override
     public void execute() {
         if(validate() == true) {
-            city.getBudget().increaseExpenditure(increaseBy);
+            city.getBudget().increasePoliceExpenditure(increaseBy);
+//            city.getBudget().refreshExpenditure();
         }
         else{
             throw new IllegalArgumentException("Not Enough Budget to Increase Expenditure");
@@ -35,7 +36,7 @@ public class IncreaseExpenditureAction implements Action{
 
     @Override
     public void undo() {
-        city.getBudget().decreaseExpenditure(increaseBy);
+        city.getBudget().decreasePoliceExpenditure(increaseBy);
     }
 
 }

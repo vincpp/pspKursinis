@@ -21,9 +21,9 @@ public class TurnManager
     public void advanceTurn()
     {
 //        City temp = currentTurn;
-        nextTurn.updateForNextTurn();
+//        nextTurn.updateForNextTurn();
         currentTurn.updateCity(nextTurn);
-//        nextTurn = currentTurn;
+        nextTurn.updateForNextTurn();
         turn++;
         checkIsGameLost();
         checkIsGameWon();

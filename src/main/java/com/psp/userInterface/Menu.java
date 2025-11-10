@@ -8,16 +8,16 @@ import lombok.Setter;
 @Setter
 public class Menu {
     private City city;
-    private CityStats cityStats;
+    private City nextTurnCity;
     private MenuName currentMenuName = MenuName.MAIN;
-    public InputHandler inputHandler;
+    private InputHandler inputHandler;
 
     private String mainMenu =
             "=========================\n" +
             "      MAIN MENU         \n" +
             "=========================\n" +
             "1. Administration Menu (V)\n" +
-            "2. New Building (B)\n" +
+            "2. Building Menu (B)\n" +
             "3. End Turn (E) \n" +
             "4. Exit (Q) \n" +
             "=========================\n" +
@@ -50,10 +50,10 @@ public class Menu {
             "=========================\n" +
             "    CONSTRUCTION MENU       \n" +
             "=========================\n" +
-            "1. House (H)\n" +
-            "2. Factory (F)\n" +
-            "3. Commercial (C)\n" +
-            "4. Park (P) \n" +
+            "1. House (H)           -5000€ \n" +
+            "2. Factory (F)         -20000€ \n" +
+            "3. Commercial (C)      -50000€\n" +
+            "4. Public Service (P)  -35000€\n" +
             "5. Back (W) \n" +
             "=========================\n" +
             "Please select a building type to build: ";
@@ -75,10 +75,8 @@ public class Menu {
             "  ADMINISTRATION MENU   \n" +
             "=========================\n" +
             "1. Change Taxes (H)\n" +
-            "2. Manage Happiness(J) \n" +
-            "3. Manage Pollution(K) \n" +
-            "4. Manage Safety(L) \n" +
-            "5. Back (W) \n" +
+            "2. Manage Police Expenditure\n" +
+            "3. Back (W) \n" +
             "=========================\n" +
             "Please select an option: ";
 
@@ -94,15 +92,9 @@ public class Menu {
         };
     }
 
-    public String getCityStats(){
-        return cityStats.getStats();
-    }
-
-
     public Menu(City city) {
         this.city = city;
         inputHandler= new InputHandler(this);
-        this.cityStats = new CityStats(city);
     }
 
 

@@ -13,6 +13,7 @@ public class DecreaseTaxesAction implements Action{
     public void execute() {
         if(validate() == true) {
             city.getBudget().decreaseTaxRate(decreaseBy);
+            city.refreshIncome();
         }
         else{
             throw new IllegalArgumentException("Cannot Decrease Taxes Below Zero");

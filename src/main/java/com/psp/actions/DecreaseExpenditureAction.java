@@ -15,16 +15,17 @@ public class DecreaseExpenditureAction implements Action{
     @Override
     public void execute() {
         if(validate() == true) {
-            city.getBudget().decreaseExpenditure(decreaseBy);
+            city.getBudget().decreasePoliceExpenditure(decreaseBy);
         }
         else{
-            throw new IllegalArgumentException("Cannot Decrease Expenditure Below Zero");
+
+            System.out.println("Cannot Decrease Expenditure Below Zero");
         }
     }
 
     @Override
     public boolean validate() {
-        if (city.getBudget().getExpenditure() - decreaseBy < 0) {
+        if (city.getBudget().getPoliceExpenditure() - decreaseBy < 0) {
             System.out.println("Cannot decrease expenditure below zero by " + decreaseBy);
             return false;
         }
@@ -33,6 +34,6 @@ public class DecreaseExpenditureAction implements Action{
 
     @Override
     public void undo() {
-        city.getBudget().increaseExpenditure(decreaseBy);
+        city.getBudget().increasePoliceExpenditure(decreaseBy);
     }
 }

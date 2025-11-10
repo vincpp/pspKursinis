@@ -1,14 +1,11 @@
-package com.psp.userInterface;
-
-import com.psp.cityEntities.BuildingManager;
-import com.psp.cityEntities.BuildingType;
-import com.psp.cityEntities.City;
+package com.psp.cityEntities;
 
 public class CityStats {
     City city;
     City nextTurnCity;
-    public CityStats(City city){
+    public CityStats(City city, City nextTurnCity) {
         this.city = city;
+        this.nextTurnCity = nextTurnCity;
 
     }
 
@@ -16,10 +13,6 @@ public class CityStats {
         if (city == null) {
             return "City not available." + System.lineSeparator();
         }
-
-        // create a deep copy and compute next-turn projection
-        this.nextTurnCity = new City(this.city);
-        this.nextTurnCity.updateForNextTurn();
 
          // ANSI color codes
          final String RESET = "\u001B[0m";
@@ -37,6 +30,8 @@ public class CityStats {
         long currentMoney = city.getBudget().getMoney();
         long currentIncome = city.getBudget().getIncome();
         long currentExpenditure = city.getBudget().getExpenditure();
+        long currentPoliceExpenditure = city.getBudget().getPoliceExpenditure();
+        long currentServiceBuildingUpkeep = city.getBudget().getServiceBuildingUpkeep();
         int happiness = city.getAttributes().getHappiness();
         int pollution = city.getAttributes().getPollution();
         int safety = city.getAttributes().getSafety();
@@ -60,9 +55,14 @@ public class CityStats {
         long projectedMoney = nextTurnCity.getBudget().getMoney();
         long projectedIncome = nextTurnCity.getBudget().getIncome();
         long projectedExpenditure = nextTurnCity.getBudget().getExpenditure();
+
+        long projectedPoliceExpenditure = nextTurnCity.getBudget().getPoliceExpenditure();
+        long projectedServiceBuildingUpkeep = nextTurnCity.getBudget().getServiceBuildingUpkeep();
         int projectedHappiness = nextTurnCity.getAttributes().getHappiness();
         int projectedPollution = nextTurnCity.getAttributes().getPollution();
         int projectedSafety = nextTurnCity.getAttributes().getSafety();
+
+        long projNetIncome = (projectedIncome - projectedExpenditure);
 
         int projResA = projectedBM.getActiveBuildingCount(BuildingType.RESIDENTIAL);
         int projResI = projectedBM.getInactiveBuildingCount(BuildingType.RESIDENTIAL);
@@ -82,17 +82,18 @@ public class CityStats {
 
         // Current attribute colors
         String colorH = (happiness < 30) ? RED : (happiness < 70) ? YELLOW : GREEN;
-        String colorP = (pollution < 30) ? RED : (pollution < 70) ? YELLOW : GREEN;
+        String colorP = (pollution < 30) ? GREEN : (pollution < 70) ? YELLOW : RED;
         String colorS = (safety < 30) ? RED : (safety < 70) ? YELLOW : GREEN;
 
         // Trend colors comparing projected vs current
         String projHTrendColor = projectedHappiness > happiness ? GREEN : (projectedHappiness < happiness ? RED : YELLOW);
-        String projPTrendColor = projectedPollution > pollution ? GREEN : (projectedPollution < pollution ? RED : YELLOW);
+        String projPTrendColor = projectedPollution < pollution ? GREEN : (projectedPollution > pollution ? RED : YELLOW);
         String projSTrendColor = projectedSafety > safety ? GREEN : (projectedSafety < safety ? RED : YELLOW);
 
         String projMoneyColor = projectedMoney > currentMoney ? GREEN : (projectedMoney < currentMoney ? RED : YELLOW);
         String projIncomeColor = projectedIncome > currentIncome ? GREEN : (projectedIncome < currentIncome ? RED : YELLOW);
-        String projExpenditureColor = projectedExpenditure > currentExpenditure ? GREEN : (projectedExpenditure < currentExpenditure ? RED : YELLOW);
+        String projExpenditureColor = projectedExpenditure < currentExpenditure ? GREEN : (projectedExpenditure > currentExpenditure ? RED : YELLOW);
+        String projNetIncomeColor = (projectedIncome - projectedExpenditure) > 0 ? GREEN : (projectedIncome - projectedExpenditure < 0 ? RED : YELLOW);
 
         String projPopColor = projectedPop > currentPop ? GREEN : (projectedPop < currentPop ? RED : YELLOW);
         String projGrowthColor = projectedGrowth > currentGrowth ? GREEN : (projectedGrowth < currentGrowth ? RED : YELLOW);
@@ -133,6 +134,7 @@ public class CityStats {
           .append(" --> ").append(projHTrendColor).append(projectedHappiness).append(RESET)
           .append("\t\tMoney: ").append(currentMoney).append("€")
           .append(" --> ").append(projMoneyColor).append(projectedMoney).append(RESET).append("€")
+          .append("\t(").append(projNetIncomeColor).append(projNetIncome).append(RESET).append("€)")
           .append(System.lineSeparator());
 
         // Line 2: Growth | Pollution | Income
@@ -149,8 +151,9 @@ public class CityStats {
           .append(" --> ").append(YELLOW).append(String.format("%.2f%%", projectedTax)).append(RESET)
           .append("\t\tSafety: ").append(colorS).append(safety).append(RESET)
           .append(" --> ").append(projSTrendColor).append(projectedSafety).append(RESET)
-          .append("\t\t\tExpenditure: ").append(currentExpenditure).append("€")
+          .append("\t\t\tExpenditure: ").append(currentExpenditure).append("€ (").append(currentPoliceExpenditure).append("€ + ").append(currentServiceBuildingUpkeep).append("€)")
           .append(" --> ").append(projExpenditureColor).append(projectedExpenditure).append(RESET).append("€")
+            .append(" (").append(projectedPoliceExpenditure).append("€ + ").append(projectedServiceBuildingUpkeep).append("€)")
           .append(System.lineSeparator());
 
 

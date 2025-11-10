@@ -1,20 +1,30 @@
 package com.psp.utils;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.Random;
 
-@NoArgsConstructor
-@Getter
-@Setter
 public class RandomProvider {
     private long seed;
+    private final Random random;
+
+    public RandomProvider() {
+        this(System.currentTimeMillis());
+    }
 
     public RandomProvider(long seed) {
         this.seed = seed;
-        System.out.println("RandomProvider initialized with seed: " + seed);
+        this.random = new Random(seed);
     }
-    long getRandomNumber(){
-        return 0;
+
+    public long getSeed() {
+        return seed;
+    }
+
+    public void setSeed(long seed) {
+        this.seed = seed;
+        this.random.setSeed(seed);
+    }
+
+    long getRandomNumber() {
+        return random.nextLong();
     }
 }

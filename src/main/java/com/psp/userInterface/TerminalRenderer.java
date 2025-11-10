@@ -61,9 +61,9 @@ public class TerminalRenderer {
 
     public void clearAndRender(String newMenu, String newStats, int turnNumber) {
         setCurrentStats(newStats);
-        System.out.println("TURN: " + turnNumber);
         setCurrentMenu(newMenu);
         clearScreen();
+        System.out.println("TURN: " + turnNumber);
         render();
     }
 }

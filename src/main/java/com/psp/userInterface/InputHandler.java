@@ -19,7 +19,7 @@ public class InputHandler {
         this.parentMenu = parentMenu;
     }
 
-    public Action readMenuInput(MenuName menu, String input) throws GoBackException, ExitProgramException, EndTurnException {
+    public Action readMenuInput(MenuName menu, String input) throws ExitProgramException, EndTurnException {
         String cmd = (input == null) ? "" : input.toLowerCase().trim();
         switch (menu) {
             case MAIN -> {
@@ -71,7 +71,7 @@ public class InputHandler {
     }
 
     // Construction submenu
-    public Action readConstructBuildingMenuInput(String input) throws GoBackException {
+    public Action readConstructBuildingMenuInput(String input) {
         switch (input.toLowerCase().trim()) {
             case "1", "h" -> {
                 return new NewBuildingAction(parentMenu.getCity(), BuildingType.RESIDENTIAL);
@@ -92,7 +92,7 @@ public class InputHandler {
     }
 
     // Fixing submenu
-    public Action readFixBuildingMenuInput(String input) throws GoBackException {
+    public Action readFixBuildingMenuInput(String input){
         switch (input.toLowerCase().trim()) {
             case "1", "h" -> {
                 return new FixBuildingAction(parentMenu.getCity(), BuildingType.RESIDENTIAL);
@@ -113,7 +113,7 @@ public class InputHandler {
     }
 
     // Destruction submenu
-    public Action readDestroyBuildingMenuInput(String input) throws GoBackException {
+    public Action readDestroyBuildingMenuInput(String input){
         switch (input.toLowerCase().trim()) {
             case "1", "h" -> {
                 return new DestroyBuildingAction(parentMenu.getCity(), BuildingType.RESIDENTIAL);
@@ -133,7 +133,7 @@ public class InputHandler {
         return null;
     }
 
-    public Action readAdministrationMenuInput(String input) throws GoBackException {
+    public Action readAdministrationMenuInput(String input) {
         switch (input.toLowerCase().trim()) {
             case "1", "h" -> {
                 System.out.print("Input by how much to change taxes (integer, negative to decrease): ");
@@ -151,10 +151,22 @@ public class InputHandler {
                     System.out.println("Invalid number: " + line);
                 }
             }
-            case "2", "j" -> System.out.println("Manage Happiness selected (not implemented yet).");
-            case "3", "k" -> System.out.println("Manage Pollution selected (not implemented yet).");
-            case "4", "l" -> System.out.println("Manage Safety selected (not implemented yet).");
-            case "5", "w" -> parentMenu.setCurrentMenuName(MenuName.MAIN);
+            case "2", "j" -> {
+                System.out.println("Input by how much to change Police funding (integer, negative to decrease):");
+                String line = scanner.nextLine();
+                try {
+                    int delta = Integer.parseInt(line.trim());
+                    if(delta > 0) {
+                        return new IncreaseExpenditureAction(parentMenu.getCity(), -delta);
+                    }
+                    else {
+                        return new DecreaseExpenditureAction(parentMenu.getCity(), delta);
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid number: " + line);
+                }
+            }
+            case "3", "w" -> parentMenu.setCurrentMenuName(MenuName.MAIN);
             default -> System.out.println("Invalid input: " + input);
         }
         return null;

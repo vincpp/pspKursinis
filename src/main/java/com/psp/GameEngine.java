@@ -2,6 +2,7 @@ package com.psp;
 
 import com.psp.actions.*;
 import com.psp.cityEntities.City;
+import com.psp.cityEntities.CityStats;
 import com.psp.userInterface.Menu;
 import com.psp.Exceptions.*;
 import com.psp.userInterface.MenuName;
@@ -12,22 +13,24 @@ import java.util.Scanner;
 public class GameEngine {
     City city = new City();
     City nextTurnCity = new City();
+    CityStats cityStats = new CityStats(city, nextTurnCity);
     TurnManager turnManager = new TurnManager(city, nextTurnCity);
-    Menu menu = new Menu(city);
+    Menu menu = new Menu(nextTurnCity); // needs next turn city to be able to rollback
     Scanner scanner = new Scanner(System.in);
     TerminalRenderer renderer = new TerminalRenderer();
 //    menu.startInputLoop();
 
-
+    public GameEngine() {
+        nextTurnCity.updateForNextTurn();
+    }
 
     void start() {
         while (true) {
             try {
-                renderer.clearAndRender(menu.getCurrentMenu(), menu.getCityStats(), turnManager.getTurn());
+                renderer.clearAndRender(menu.getCurrentMenu(), cityStats.getStats(), turnManager.getTurn());
                 String input = scanner.nextLine();
 
-//                menu.inputHandler.readMenuInput(menu.getCurrentMenuName(), input);
-                Action action = menu.inputHandler.readMenuInput(menu.getCurrentMenuName(), input);
+                Action action = menu.getInputHandler().readMenuInput(menu.getCurrentMenuName(), input);
                 if (action != null) {
                     handlePlayerAction(action);
                 }
@@ -36,9 +39,10 @@ public class GameEngine {
             catch (EndTurnException e){
                 turnManager.advanceTurn();
             }
-            catch (GoBackException goBackException) {
-                menu.setCurrentMenuName(MenuName.MAIN) ;
-            } catch (ExitProgramException exitProgramException) {
+//            catch (GoBackException goBackException) {
+//                menu.setCurrentMenuName(MenuName.MAIN) ;
+//            }
+            catch (ExitProgramException exitProgramException) {
                 System.out.println("Exiting program...");
                 System.exit(0);
             }

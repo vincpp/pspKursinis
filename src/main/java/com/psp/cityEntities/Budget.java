@@ -1,5 +1,6 @@
 package com.psp.cityEntities;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,37 +9,48 @@ import lombok.Setter;
 public class Budget {
     private long money=0;
     private long income=0;
-    private long expenditure=0;
+    private long policeExpenditure=0;
+    private long serviceBuildingUpkeep=0;
     private double taxRate=0;
-
-    public Budget(long money, long expenditure, long income, double taxRate) {
-        this.money = money;
-        this.expenditure = expenditure;
-        this.income = income;
-        this.taxRate = taxRate;
-    }
 
     public Budget() {
         this.money = 100000;
-        this.expenditure = 10000;
-        this.income = 7000;
+        this.policeExpenditure = 10000;
         this.taxRate = 10.0;
     }
 
-    public void collectTaxes(long populationIncome) {
-        money += (taxRate * 0.01) * populationIncome;
+    public void setServiceBuildingUpkeepByBuildingCount(int serviceBuildingCount){
+        this.serviceBuildingUpkeep = (long) serviceBuildingCount * 5000;
     }
 
-    public void increaseExpenditure(long amount){
-        expenditure += amount;
+    public void refreshIncome(long workingPopulation) {
+        this.income = (long) (workingPopulation * 10 * (1.+(this.taxRate / 100.0)));
     }
-    public void decreaseExpenditure(int decreaseBy) {
-        if(decreaseBy <= expenditure){
-            expenditure -= decreaseBy;
+    public long getExpenditure(){
+        return this.policeExpenditure + this.serviceBuildingUpkeep;
+    }
+
+    public void increasePoliceExpenditure(long amount){
+        policeExpenditure += amount;
+    }
+    public void decreasePoliceExpenditure(long decreaseBy) {
+        if(decreaseBy <= policeExpenditure){
+            policeExpenditure -= decreaseBy;
         }
         else{
-            System.out.println("Cannot decrease expenditure by " + decreaseBy + " as it exceeds current expenditure of " + expenditure);
+            System.out.println("Cannot decrease Police expenditure by " + decreaseBy + " as it exceeds current expenditure of " + policeExpenditure);
         }
+    }
+
+
+    public void addMoneyFromIndustrialBuildings(BuildingManager buildingManager){
+        int industrialBuildingCount = buildingManager.getIndustrialBuildings();
+        int commercialBuildingCount = buildingManager.getCommercialBuildings();
+        long addedMoney = buildingManager.getIndustrialBuildings() * 3000;
+
+        addedMoney *=  0.05 * buildingManager.getCommercialBuildings();
+        addedMoney += (long) commercialBuildingCount * 500;
+        this.money += addedMoney;
     }
 
     public void increaseTaxRate(int amount){
@@ -67,10 +79,11 @@ public class Budget {
         money += amount;
     }
 
-    public void updateForNextTurn(Population population) {
+    public void updateForNextTurn(Population population, BuildingManager buildingManager) {
         if (population.getPopulationCount() < 0) return;
-        this.income = Math.round(population.getPopulationCount() * population.getWorkerPercentage() * (1.+(this.taxRate / 100.0)));
-        this.money += this.income - this.expenditure;
+        this.refreshIncome(population.getWorkingPopulation());
+        this.addMoneyFromIndustrialBuildings(buildingManager);
+        this.money += this.income - this.getExpenditure();
     }
 
 

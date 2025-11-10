@@ -8,10 +8,10 @@ import lombok.Setter;
 
 public class BuildingManager {
     private int landSlots = 20;
-    private int residentialBuildings = 0;
-    private int commercialBuildings = 0;
-    private int industrialBuildings = 0;
-    private int publicServiceBuildings = 0;
+    private int residentialBuildings = 5;
+    private int commercialBuildings = 1;
+    private int industrialBuildings = 1;
+    private int publicServiceBuildings = 1;
 
     private int inactiveResidentialBuildings = 0;
     private int inactiveCommercialBuildings = 0;
@@ -22,9 +22,9 @@ public class BuildingManager {
     public int getBuildingPrice(BuildingType type) {
         switch (type) {
             case RESIDENTIAL -> {return 5000;}
-            case COMMERCIAL -> {return 30000;}
+            case COMMERCIAL -> {return 50000;}
             case INDUSTRIAL -> {return 20000;}
-            case PUBLIC_SERVICE -> {return 10000;}
+            case PUBLIC_SERVICE -> {return 35000;}
             default -> {
                 System.out.println("Unknown building type.");
                 return 0;
