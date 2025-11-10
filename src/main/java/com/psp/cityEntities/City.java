@@ -31,6 +31,7 @@ public class City {
         population.updateForNextTurn();
         attributes.updateForNextTurn(population, buildingManager, budget);
         budget.setServiceBuildingUpkeepByBuildingCount(buildingManager.getPublicServiceBuildings());
+        budget.setIncomeFromBuildings(buildingManager);
         budget.updateForNextTurn(population);
 
     }

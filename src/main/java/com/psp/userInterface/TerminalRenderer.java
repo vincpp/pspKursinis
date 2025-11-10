@@ -28,33 +28,29 @@ public class TerminalRenderer {
     }
 
     public void clearScreen() {
-        // Try ANSI escape first
-        final String ANSI_CLS = "\u001b[2J\u001b[H";
-        try {
-            System.out.print(ANSI_CLS);
-            System.out.flush();
-            // Give the terminal a moment (often not necessary)
-            return;
-        } catch (Throwable ignored) {
-            // ignore and try other options
-        }
+
+//        try {
+//            System.out.print("\033[H\033[2J");
+//            System.out.flush();
+//            // Give the terminal a moment (often not necessary)
+//            return;
+//        } catch (Throwable ignored) {
+//            System.out.println("Can't use ANSI escape codes to clear the screen.");
+//        }
 
         // Attempt OS-specific clear command
         String os = System.getProperty("os.name").toLowerCase();
         try {
             if (os.contains("win")) {
                 // Windows
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                new ProcessBuilder("powershell", "-command", "Clear-Host").inheritIO().start().waitFor();;
             } else {
                 // Unix-like
                 new ProcessBuilder("clear").inheritIO().start().waitFor();
             }
             return;
         } catch (IOException | InterruptedException ignored) {
-            // ignore and fallback to newline
-            Thread.currentThread().interrupt();
-        } catch (Throwable ignored) {
-            // ignore any other issues
+            System.out.println("Couldn't clear the terminal screen.");
         }
 
     }

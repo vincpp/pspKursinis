@@ -9,6 +9,8 @@ import lombok.Setter;
 public class Budget {
     private long money=0;
     private long income=0;
+    private long incomeFromTax=0;
+    private long incomeFromBuildings=0;
     private long policeExpenditure=0;
     private long serviceBuildingUpkeep=0;
     private double taxRate=0;
@@ -25,6 +27,7 @@ public class Budget {
 
     public void refreshIncome(long workingPopulation) {
         this.income = (long) (workingPopulation * 10 * (1.+(this.taxRate / 100.0)));
+        this.income += this.getIncomeFromBuildings();
     }
     public long getExpenditure(){
         return this.policeExpenditure + this.serviceBuildingUpkeep;
@@ -43,14 +46,14 @@ public class Budget {
     }
 
 
-    public void addMoneyFromIndustrialBuildings(BuildingManager buildingManager){
+    public void setIncomeFromBuildings(BuildingManager buildingManager){
         int industrialBuildingCount = buildingManager.getIndustrialBuildings();
         int commercialBuildingCount = buildingManager.getCommercialBuildings();
-        long addedMoney = buildingManager.getIndustrialBuildings() * 3000;
+        long addedMoney = (long) buildingManager.getIndustrialBuildings() * 3000;
 
-        addedMoney *=  0.05 * buildingManager.getCommercialBuildings();
+        addedMoney *=  1.10 * buildingManager.getCommercialBuildings();
         addedMoney += (long) commercialBuildingCount * 500;
-        this.money += addedMoney;
+        this.incomeFromBuildings = addedMoney;
     }
 
     public void increaseTaxRate(int amount){
@@ -79,10 +82,10 @@ public class Budget {
         money += amount;
     }
 
-    public void updateForNextTurn(Population population, BuildingManager buildingManager) {
+    public void updateForNextTurn(Population population) {
         if (population.getPopulationCount() < 0) return;
+
         this.refreshIncome(population.getWorkingPopulation());
-        this.addMoneyFromIndustrialBuildings(buildingManager);
         this.money += this.income - this.getExpenditure();
     }
 
